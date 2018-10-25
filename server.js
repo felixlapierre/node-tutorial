@@ -35,6 +35,7 @@ io.on('connection', function(socket) {
             right:false,
             down:false
         }
+        console.log(players);
     });
 
     socket.on('movement', function(data) {
@@ -46,7 +47,7 @@ io.on('connection', function(socket) {
     })
 });
 
-//Update players then set out state
+//Update players then send out state
 setInterval(function() {
 
     for(var i in players) {
@@ -66,5 +67,5 @@ setInterval(function() {
     }
 
     io.sockets.emit('state', players);
-}, 1000);
+}, 1000 / 60);
 
