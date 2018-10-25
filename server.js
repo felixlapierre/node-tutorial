@@ -22,3 +22,49 @@ server.listen(5000, function() {
     console.log('Starting server on port 5000');
 });
 
+var players = {};
+//Add the WebSocket handlers
+io.on('connection', function(socket) {
+    
+    socket.on('new player', function() {
+        players[socket.id] = {
+            x:300,
+            y:300,
+            up:false,
+            left:false,
+            right:false,
+            down:false
+        }
+    });
+
+    socket.on('movement', function(data) {
+        var player = players[socket.id] || {};
+        player.left = data.left;
+        player.up = data.up;
+        player.right = data.right;
+        player.down = data.down;
+    })
+});
+
+//Update players then set out state
+setInterval(function() {
+
+    for(var i in players) {
+        var player = players[i];
+
+        if(player.left == true)
+            player.x -= 5;
+
+        if(player.right == true)
+            player.x += 5;
+
+        if(player.up == true)
+            player.y -= 5;
+        
+        if(player.down == true)
+            player.y += 5;
+    }
+
+    io.sockets.emit('state', players);
+}, 1000);
+
