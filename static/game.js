@@ -62,11 +62,10 @@ var context = canvas.getContext('2d');
 socket.on('state', function(players) {
     //Erase the old image
     context.clearRect(0, 0, canvas.width, canvas.height);
-    context.fillStyle = 'green';
 
     for(var id in players) {
         var player = players[id];
-        
+        context.fillStyle = player.color;
         context.beginPath();
         context.arc(player.x, player.y, 10, 0, 2 * Math.PI);
         context.fill();

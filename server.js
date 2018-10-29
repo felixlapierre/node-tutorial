@@ -33,7 +33,8 @@ io.on('connection', function(socket) {
             up:false,
             left:false,
             right:false,
-            down:false
+            down:false,
+            color:'#'+Math.floor(Math.random()*16777215).toString(16)
         }
         console.log(players);
     });
@@ -44,6 +45,10 @@ io.on('connection', function(socket) {
         player.up = data.up;
         player.right = data.right;
         player.down = data.down;
+    })
+
+    socket.on('disconnect', function(data) {
+        delete players[socket.id];
     })
 });
 
